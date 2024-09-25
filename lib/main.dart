@@ -1,4 +1,4 @@
-import 'package:charchters/app_router.dart';
+import 'package:plants/app_router.dart';
 import 'package:flutter/material.dart';
 
 void main() {

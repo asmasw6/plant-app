@@ -1,4 +1,9 @@
-final baseUrl = 'https://perenual.com/api/';
+import 'package:flutter/material.dart';
 
-const charachtersScreen = '/';
-const charachtersDetails = '/character_details';
+const baseUrl = 'https://perenual.com/api/';
+
+const plantsScreen = '/';
+const plantsDetails = '/plant_details';
+const darkGreen = Color(0xff3B5F41);
+const green = Color(0xff66A96B);
+const lightGreen = Color(0xff98E19A);

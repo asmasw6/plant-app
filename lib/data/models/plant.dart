@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-class Charachter {
+class Plant {
 
   late int Id ;
   late String name;
@@ -9,7 +9,7 @@ class Charachter {
   late List<String> sunlight;
   late DefaultImage? defaultImage;
 
-  Charachter({
+  Plant({
     required this.Id,
     required this.name,
     required this.scientificName,
@@ -19,7 +19,7 @@ class Charachter {
     required this.defaultImage
   });
 
-  Charachter.fromJson(Map<String, dynamic> json) {
+  Plant.fromJson(Map<String, dynamic> json) {
     Id = json['id'];
     name = json['common_name'];
     scientificName = json['scientific_name'].cast<String>();

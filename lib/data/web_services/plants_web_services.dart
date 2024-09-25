@@ -1,12 +1,12 @@
 import 'dart:developer';
 
-import 'package:charchters/constant/strings.dart';
+import 'package:plants/constant/strings.dart';
 import 'package:dio/dio.dart';
 
-class CharactersWebServices {
+class PlantsWebServices {
   late Dio dio;
 
-  CharactersWebServices() {
+  PlantsWebServices() {
     BaseOptions options = BaseOptions(
       baseUrl: baseUrl,
       receiveDataWhenStatusError: true,
@@ -16,7 +16,7 @@ class CharactersWebServices {
 
     dio = Dio(options);
   }
-  Future<List<dynamic>> getAllCharrachters() async {
+  Future<List<dynamic>> getAllPlants() async {
     try {
       Response response = await dio.get(
         "species-list",
@@ -27,7 +27,7 @@ class CharactersWebServices {
       //log("Response Data: >>>>>>>>>> ${response.data['data']}", name: 'getAllCharrachters');
       return response.data['data'];
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       return [];
     }
   }

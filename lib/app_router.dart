@@ -1,40 +1,41 @@
-import 'package:charchters/business_logic/cubit/characters_cubit.dart';
-import 'package:charchters/constant/strings.dart';
-import 'package:charchters/data/models/charachter.dart';
-import 'package:charchters/data/repositories/characters_repository.dart';
-import 'package:charchters/data/web_services/characters_web_services.dart';
-import 'package:charchters/presentation/screens/charachter_screen.dart';
-import 'package:charchters/presentation/screens/characters_details_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:plants/business_logic/cubit/plants_cubit.dart';
+import 'package:plants/constant/strings.dart';
+import 'package:plants/data/models/plant.dart';
+import 'package:plants/data/repositories/plants_repository.dart';
+import 'package:plants/data/web_services/plants_web_services.dart';
+import 'package:plants/presentation/screens/plants_details_screen.dart';
+import 'package:plants/presentation/screens/plants_screen.dart';
 
 class AppRouter {
-  late CharactersRepository charactersRepository;
-  late CharactersCubit charactersCubit;
+  late PlantsRepository plantsRepository;
+  late PlantsCubit plantsCubit;
 
   AppRouter() {
-    charactersRepository =
-        CharactersRepository(charactersWebServices: CharactersWebServices());
-    charactersCubit = CharactersCubit(charactersRepository);
+    plantsRepository =
+        PlantsRepository(plantsWebServices: PlantsWebServices());
+    plantsCubit = PlantsCubit(plantsRepository);
   }
 
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case charachtersScreen:
+      case plantsScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => charactersCubit,
-            child: const CharachterScreen(),
+            create: (context) => plantsCubit,
+            child: const PlantsScreen(),
           ),
         );
 
-      case charachtersDetails:
-        final character = settings.arguments as Charachter;
+      case plantsDetails:
+        final plant = settings.arguments as Plant;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => charactersCubit,
-            child: CharactersDetails(
-              character: character,
+            create: (context) => plantsCubit,
+            child: PlantsDetails(
+              plant: plant,
             ),
           ),
         );

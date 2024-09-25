@@ -1,32 +1,33 @@
-import 'package:charchters/business_logic/cubit/characters_cubit.dart';
-import 'package:charchters/data/models/charachter.dart';
-import 'package:charchters/presentation/widgets/character_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_offline/flutter_offline.dart';
+import 'package:plants/business_logic/cubit/plants_cubit.dart';
+import 'package:plants/constant/strings.dart';
+import 'package:plants/data/models/plant.dart';
+import 'package:plants/presentation/widgets/plant_item.dart';
 
-class CharachterScreen extends StatefulWidget {
-  const CharachterScreen({super.key});
+class PlantsScreen extends StatefulWidget {
+  const PlantsScreen({super.key});
 
   @override
-  State<CharachterScreen> createState() => _CharachterScreenState();
+  State<PlantsScreen> createState() => _PlantsScreenState();
 }
 
-class _CharachterScreenState extends State<CharachterScreen> {
-  late List<Charachter> allCharrachters;
-  late List<Charachter> searchedForCharacters;
+class _PlantsScreenState extends State<PlantsScreen> {
+  late List<Plant> allPlants;
+  late List<Plant> searchedForPlants;
   bool isSearching = false;
   final searchTextController = TextEditingController();
 
   Widget buildSearchFeild() {
     return TextField(
       controller: searchTextController,
-      cursorColor: Colors.red,
+      cursorColor: lightGreen,
       decoration: const InputDecoration(
-        hintText: "Search character ..",
+        hintText: "Search plant ...",
         border: InputBorder.none,
         hintStyle: TextStyle(
-          color: Colors.blue,
+          color: lightGreen,
           fontSize: 18,
         ),
       ),
@@ -34,8 +35,8 @@ class _CharachterScreenState extends State<CharachterScreen> {
         color: Colors.blue,
         fontSize: 18,
       ),
-      onChanged: (searchedCharacter) {
-        addSearchedForItem(searchedCharacter);
+      onChanged: (searchedPlant) {
+        addSearchedForItem(searchedPlant);
       },
     );
   }
@@ -43,17 +44,17 @@ class _CharachterScreenState extends State<CharachterScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<CharactersCubit>(context).getAllCharrachters();
+    BlocProvider.of<PlantsCubit>(context).getAllPlants();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: darkGreen,
         leading: isSearching
             ? const BackButton(
-                color: Colors.black,
+                color: lightGreen,
               )
             : Container(),
         title: isSearching ? buildSearchFeild() : buildAppBarTitle(),
@@ -67,18 +68,18 @@ class _CharachterScreenState extends State<CharachterScreen> {
           return builNoInternetWidget();
         }
       }, builder: (context) {
-        return Center(child: CircularProgressIndicator()); // Placeholder
+        return const Center(child: CircularProgressIndicator()); // Placeholder
       }),
     );
   }
 
   Widget builNoInternetWidget() {
-    return Center(
+    return const Center(
       child: Text(
-        "Oops! It seems there's no internet connection. Please check your connection and try again.",
+        "Oops! It seems there's no internet connection. Please check your connection and try again. ❗🪓",
         style: TextStyle(
           fontSize: 18,
-          color: Colors.redAccent,
+          color: darkGreen,
           fontWeight: FontWeight.bold,
         ),
         textAlign: TextAlign.center,
@@ -87,15 +88,15 @@ class _CharachterScreenState extends State<CharachterScreen> {
   }
 
   Widget buildBlocWidgte() {
-    return BlocBuilder<CharactersCubit, CharactersState>(
+    return BlocBuilder<PlantsCubit, PlantsState>(
       builder: (context, state) {
-        if (state is CharactersLoaded) {
-          allCharrachters = state.characters;
+        if (state is PlantsLoaded) {
+          allPlants = state.plants;
           return buildLoadedListWidget();
         } else {
           const Center(
             child: CircularProgressIndicator(
-              color: Colors.indigoAccent,
+              color: darkGreen,
             ),
           );
         }
@@ -108,17 +109,17 @@ class _CharachterScreenState extends State<CharachterScreen> {
   Widget buildLoadedListWidget() {
     return SingleChildScrollView(
       child: Container(
-        color: Colors.black12,
+        color: darkGreen,
         child: Column(
           children: [
-            buildCharachterList(),
+            buildPlantList(),
           ],
         ),
       ),
     );
   }
 
-  Widget buildCharachterList() {
+  Widget buildPlantList() {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -130,24 +131,24 @@ class _CharachterScreenState extends State<CharachterScreen> {
       physics: const ClampingScrollPhysics(),
       padding: EdgeInsets.zero,
       itemCount: searchTextController.text.isEmpty
-          ? allCharrachters.length
-          : searchedForCharacters.length,
+          ? allPlants.length
+          : searchedForPlants.length,
       itemBuilder: (context, index) {
-        return CharacterItem(
-          itemOfCharacter: searchTextController.text.isEmpty
-              ? allCharrachters[index]
-              : searchedForCharacters[index],
+        return PlantItem(
+          itemOfPlant: searchTextController.text.isEmpty
+              ? allPlants[index]
+              : searchedForPlants[index],
         );
       },
     );
   }
 
-  void addSearchedForItem(String searchedCharacter) {
-    searchedForCharacters = allCharrachters.where(
+  void addSearchedForItem(String searchedPlant) {
+    searchedForPlants = allPlants.where(
       (item) {
         return item.name
             .toLowerCase()
-            .startsWith(searchedCharacter.toLowerCase());
+            .startsWith(searchedPlant.toLowerCase());
       },
     ).toList();
     setState(() {});
@@ -161,7 +162,7 @@ class _CharachterScreenState extends State<CharachterScreen> {
               clearSearch();
               Navigator.pop(context);
             },
-            icon: Icon(Icons.clear))
+            icon: const Icon(Icons.clear, color: lightGreen,))
       ];
     } else {
       return [
@@ -169,7 +170,7 @@ class _CharachterScreenState extends State<CharachterScreen> {
             onPressed: () {
               startSearch();
             },
-            icon: Icon(Icons.search))
+            icon: const Icon(Icons.search,color: lightGreen,))
       ];
     }
   }
@@ -202,9 +203,9 @@ class _CharachterScreenState extends State<CharachterScreen> {
 
   Widget buildAppBarTitle() {
     return const Text(
-      "Characters",
+      "Plants 🌴",
       style: TextStyle(
-        color: Colors.indigoAccent,
+        color: lightGreen,
       ),
     );
   }
